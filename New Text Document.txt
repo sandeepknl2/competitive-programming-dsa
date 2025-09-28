@@ -1,0 +1,66 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+int main() {
+   
+   vector<int> arr={3,5,7,8,30};
+   
+   sort(arr.begin(),arr.end());
+   int n=arr.size();
+   int dif=0,ma=0;
+   for(int i=0;i<n-1;i++){
+   for(int j=i+1;j<n;j++){
+    dif=arr[j]-arr[i];
+   ma=max(ma,dif);
+
+   break;
+   }
+   }
+   cout<<ma;
+
+    return 0;
+}
+
+opyimized
+
+ int n = nums.size();
+        if (n < 2) return 0;
+        
+        // Find min and max
+        int minVal = *min_element(nums.begin(), nums.end());
+        int maxVal = *max_element(nums.begin(), nums.end());
+        
+        if (minVal == maxVal) return 0;
+        
+        // Calculate bucket size and number of buckets
+        int bucketSize = max(1, (maxVal - minVal) / (n - 1));
+        int bucketCount = (maxVal - minVal) / bucketSize + 1;
+        
+        // Initialize buckets
+        vector<int> bucketMin(bucketCount, INT_MAX);
+        vector<int> bucketMax(bucketCount, INT_MIN);
+        vector<bool> bucketUsed(bucketCount, false);
+        
+        // Place numbers in buckets
+        for (int num : nums) {
+            int bucketIndex = (num - minVal) / bucketSize;
+            bucketMin[bucketIndex] = min(bucketMin[bucketIndex], num);
+            bucketMax[bucketIndex] = max(bucketMax[bucketIndex], num);
+            bucketUsed[bucketIndex] = true;
+        }
+        
+        // Find maximum gap
+        int maxGap = 0;
+        int prevMax = minVal;
+        
+        for (int i = 0; i < bucketCount; i++) {
+            if (!bucketUsed[i]) continue;
+            
+            maxGap = max(maxGap, bucketMin[i] - prevMax);
+            prevMax = bucketMax[i];
+        }
+        
+        return maxGap;
